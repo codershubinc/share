@@ -28,8 +28,7 @@ const FileInput = () => {
             uploadingDate: dateOfNow,
             size: fileSize
         }
-        console.log('File info:', fileInfo);
-
+        console.log('File info:', fileInfo)
 
     };
 
