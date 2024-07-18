@@ -1,9 +1,11 @@
 'use client'
 import React from 'react';
+import { currentDate } from '@/helpers/common/functions/date/date.helpers'
+import { fileSize, fileSizeCheckSafe } from '@/helpers/common/functions/fileSize.helpers'
+import toast from 'react-hot-toast';
 
-const FileInput = () => {
+const page = () => {
     const handleFileChange = (event: any) => {
-        const dateOfNow = 'Date : ' + new Date().getDate() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getFullYear()
         const file = event.target.files?.[0];
 
         if (!file) return
@@ -13,11 +15,7 @@ const FileInput = () => {
         console.log('File type:', (file.type));
         console.log('Last modified:', file.lastModifiedDate);
 
-        const fileSize = Number((file.size / 1024 / 1024).toFixed(2))// in mb
-        if (fileSize >= 5) {
-            alert('File size should be less than 5 mb')
-            console.error('File size should be less than 5 mb')
-            event.target.value = null
+        if (!fileSizeCheckSafe({ maxFileSize: 5, fileSizeInBytes: file.size })) {
             return
         }
 
@@ -25,11 +23,11 @@ const FileInput = () => {
             name: file.name,
             type: (file.type),
             lastModifiedDate: file.lastModifiedDate,
-            uploadingDate: dateOfNow,
-            size: fileSize
+            uploadingDate: currentDate({ format: 'DD-MM-YYYY' }),
+            size: fileSize(file.size)
         }
+        toast.success('File info: ' + fileInfo.name)
         console.log('File info:', fileInfo)
-
     };
 
     return (
@@ -39,4 +37,4 @@ const FileInput = () => {
     );
 };
 
-export default FileInput;
+export default page;
