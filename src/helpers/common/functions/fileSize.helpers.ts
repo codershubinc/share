@@ -23,12 +23,14 @@ const fileSize = (sizeInBytes: number) => {
 interface fileSizeSafeCheckOptions {
     maxFileSize: number
     fileSizeInBytes: number
+    makeTost: boolean | false
 
 }
-const fileSizeCheckSafe = ({ maxFileSize, fileSizeInBytes }: fileSizeSafeCheckOptions) => {
+const fileSizeCheckSafe = ({ maxFileSize, fileSizeInBytes, makeTost }: fileSizeSafeCheckOptions) => {
     if ((fileSizeInBytes / 1024 / 1024) >= maxFileSize) {
-        toast.error(`File size should be less than ${maxFileSize} mb`)
-        console.error(`File size should be less than ${maxFileSize} mb`)
+        if (makeTost) {
+            toast.error(`file size could not be exited more than ${maxFileSize} mb`)
+        }
         return false
     }
     return true
