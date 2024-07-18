@@ -5,7 +5,7 @@ import { fileSize, fileSizeCheckSafe } from '@/helpers/common/functions/fileSize
 import toast from 'react-hot-toast';
 
 const page = () => {
-    const handleFileChange = (event: any) => {
+    const handleFileChange = (event:  React.ChangeEvent<HTMLInputElement>    ) => {
         const file = event.target.files?.[0];
 
         if (!file) return
@@ -13,16 +13,15 @@ const page = () => {
         console.log('File name:', file.name);
         console.log('File size:', file.size);
         console.log('File type:', (file.type));
-        console.log('Last modified:', file.lastModifiedDate);
+        console.log('Last modified:', file.lastModified);
 
-        if (!fileSizeCheckSafe({ maxFileSize: 5, fileSizeInBytes: file.size })) {
-            return
-        }
+        if (!fileSizeCheckSafe({ maxFileSize: 5, fileSizeInBytes: file.size, makeTost: true }))  return 
+
 
         const fileInfo = {
             name: file.name,
             type: (file.type),
-            lastModifiedDate: file.lastModifiedDate,
+            lastModifiedDate: file.lastModified,
             uploadingDate: currentDate({ format: 'DD-MM-YYYY' }),
             size: fileSize(file.size)
         }
