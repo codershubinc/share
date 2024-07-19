@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect } from 'react'
 
-function page() {
+function Page() {
     useEffect(() => {
         try {
             let data
@@ -21,4 +21,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

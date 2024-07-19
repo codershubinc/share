@@ -6,7 +6,7 @@ import Random from '@/helpers/common/functions/randamizer.helper';
 import Interval from '@/helpers/common/functions/interval.helper';
 
 
-const page = () => {
+const Page = () => {
     const [colorHsl, setColorHsl] = useState('')
     const [randomImageUrl, setRandomImageUrl] = useState(Random.Avatar({ avatarStyle: 'auto', query: 'JohnDoe' }));
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,4 +76,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
