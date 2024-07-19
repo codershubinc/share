@@ -1,11 +1,15 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { currentDate } from '@/helpers/common/functions/date/date.helpers'
 import { fileSize, fileSizeCheckSafe } from '@/helpers/common/functions/fileSize.helpers'
-import toast from 'react-hot-toast';
+import Random from '@/helpers/common/functions/randamizer.helper';
+import Interval from '@/helpers/common/functions/interval.helper';
 
-const page = () => {
-    const handleFileChange = (event:  React.ChangeEvent<HTMLInputElement>    ) => {
+
+const Page = () => {
+    const [colorHsl, setColorHsl] = useState('')
+    const [randomImageUrl, setRandomImageUrl] = useState(Random.Avatar({ avatarStyle: 'auto', query: 'JohnDoe' }));
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
 
         if (!file) return
@@ -15,7 +19,7 @@ const page = () => {
         console.log('File type:', (file.type));
         console.log('Last modified:', file.lastModified);
 
-        if (!fileSizeCheckSafe({ maxFileSize: 5, fileSizeInBytes: file.size, makeTost: true }))  return 
+        if (!fileSizeCheckSafe({ maxFileSize: 5, fileSizeInBytes: file.size, makeTost: true })) return
 
 
         const fileInfo = {
@@ -25,15 +29,51 @@ const page = () => {
             uploadingDate: currentDate({ format: 'DD-MM-YYYY' }),
             size: fileSize(file.size)
         }
-        toast.success('File info: ' + fileInfo.name)
         console.log('File info:', fileInfo)
-    };
 
+    };
+    const setARandomImageUrl = () => {
+        const randomImageUrl = Random.Avatar({ avatarStyle: 'auto' , queryLength: 5 })
+
+        setRandomImageUrl(randomImageUrl)
+        console.log('Random image URL:', randomImageUrl);
+
+
+    }
+
+    useEffect(() => {
+        Interval.FunctionInterval({ timeInSec: 5, functionProp: () => setARandomImageUrl() })
+        const intervalId = setInterval(() => {
+            setColorHsl(Random.ColorHSL());
+        }, 10000);
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(intervalId);
+
+    }, []);
+
+    useEffect(() => {
+        const share_div = document.getElementById('share-div')
+        if (share_div) {
+            share_div.style.backgroundColor = colorHsl
+        }
+        // console.log(colorHsl)
+
+    }, [colorHsl])
     return (
-        <div>
+        <div
+            className='flex flex-col items-center justify-center h-screen bg-slate-400'
+            id='share-div'
+        >
             <input type="file" onChange={handleFileChange} />
+            <img
+                src={randomImageUrl}
+                className='w-40 transition-opacity duration-500 ease-in-out hover:-translate-y-1 hover:scale-110'
+                alt=""
+            />
+
         </div>
     );
 };
 
-export default page;
+export default Page;
