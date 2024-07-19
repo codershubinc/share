@@ -11,10 +11,6 @@ const currentDate = ({ format }: DateOptions) => {
     }
 }
 
-
-
-
-
 export {
     currentDate
 }
