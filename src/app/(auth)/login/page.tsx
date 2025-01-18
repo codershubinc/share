@@ -1,9 +1,29 @@
+'use client'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-
 import React from 'react'
+import { useForm } from "react-hook-form"
+import Auth from "@/utils/codershubinc/auth.util"
 
-function page() {
+function Page() {
+    const { handleSubmit, register } = useForm()
+    const handleLogin = async (data: any) => {
+        try {
+            const response = await Auth.login(
+                data.email,
+                data.password
+            )
+
+            console.log('login data given', data)
+            console.log('login responce ', response)
+        } catch (error) {
+            console.log('login error', error);
+
+        }
+
+    }
+
+
     return (
         <div
             className="flex min-h-[90vh] flex-col items-center justify-between p-24"
@@ -14,22 +34,23 @@ function page() {
             >
                 <form
                     className="flex flex-col items-center justify-center space-y-4 gap-4"
+                    onSubmit={handleSubmit(handleLogin)}
                 >
                     <h2>
                         Login to <span className="text-blue-500 font-italic" >codershubinc</span> account
                     </h2>
                     <Input
-                        name="email"
                         id="email"
                         type="email"
                         placeholder="Email"
+                        {...register('email')}
                         required
                     />
                     <Input
-                        name="password"
                         id="password"
                         type="password"
                         placeholder="Enter password"
+                        {...register('password')}
                         required
                     />
                     <Button
@@ -51,4 +72,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

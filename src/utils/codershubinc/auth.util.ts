@@ -1,13 +1,15 @@
 
-const apiEndpoint = process.env.CODERSHUBINC_API_ENDPOINT
-const projectId = process.env.PROJECT_ID
-const cryptEndpoint = process.env.CRYPT_ENDPOINT
+const apiEndpoint = process.env.NEXT_PUBLIC_CODERSHUBINC_API_ENDPOINT
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
+const cryptEndpoint = process.env.NEXT_PUBLIC_CRYPT_ENDPOINT
 
 class auth {
 
 
     async login(email: string, password: string) {
         try {
+            console.log('apiEndpoint', apiEndpoint);
+            
             const response = await fetch(`${apiEndpoint}/appwrite/auth/login`, 
                 {
                     method: 'POST',
@@ -24,7 +26,7 @@ class auth {
             )
             return response;
         } catch (error) {
-            return error;
+            throw  error;
         }
     }
 
