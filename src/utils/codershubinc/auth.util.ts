@@ -9,7 +9,6 @@ class auth {
     async login(email: string, password: string) {
         try {
             console.log('apiEndpoint', apiEndpoint);
-            
             const response = await fetch(`${apiEndpoint}/appwrite/auth/login`, 
                 {
                     method: 'POST',
@@ -21,7 +20,10 @@ class auth {
                         password: password,
                         projectId: projectId,
                         apiEndpoint: cryptEndpoint,
-                    })
+                    }),
+                    credentials: 'include',
+                    mode: 'cors',
+                    
                 }
             )
             return response;
