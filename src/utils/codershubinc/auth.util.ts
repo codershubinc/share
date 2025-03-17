@@ -9,7 +9,7 @@ class auth {
     async login(email: string, password: string) {
         try {
             console.log('apiEndpoint', apiEndpoint);
-            const response = await fetch(`${apiEndpoint}/appwrite/auth/login`, 
+            const response = await fetch(`${apiEndpoint}/appwrite/auth/login`,
                 {
                     method: 'POST',
                     headers: {
@@ -18,23 +18,21 @@ class auth {
                     body: JSON.stringify({
                         email: email,
                         password: password,
-                        projectId: projectId,
-                        apiEndpoint: cryptEndpoint,
                     }),
                     credentials: 'include',
                     mode: 'cors',
-                    
+
                 }
             )
             return response;
         } catch (error) {
-            throw  error;
+            throw error;
         }
     }
 
-    async signUp(email: string, password: string , name: string) {
+    async signUp(email: string, password: string, name: string) {
         try {
-            const response = await  ''
+            const response = await ''
             return response;
         } catch (error) {
             return error;
