@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -11,48 +11,38 @@ import { motion, AnimatePresence } from "framer-motion";
 import Loading from '@/components/custom/loader';
 import Image from 'next/image';
 
-function Page() {
+function SignupPage() {
     const { handleSubmit, register } = useForm();
     const [loading, setLoading] = useState(false);
     const [navigating, setNavigating] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        if (navigating) {
-            setTimeout(() => {
-                setNavigating(false);
-            }, 500); // Smooth animation before navigation
-        }
-    }, [navigating]);
-
-    const handleLogin = async (data: any) => {
+    const handleSignup = async (data: any) => {
         setLoading(true);
         try {
-            const response = await Auth.login(data.email, data.password);
-            console.log('Login response:', response);
+            const response = await Auth.signUp(data.name, data.email, data.password);
+            console.log('Signup response:', response);
             setNavigating(true);
-            // setTimeout(() => router.push('/dashboard'), 500);
+            setTimeout(() => router.push('/dashboard'), 500);
         } catch (error) {
-            console.log('Login error', error);
+            console.log('Signup error', error);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleGoogleLogin = async () => {
+    const handleGoogleSignup = async () => {
         setLoading(true);
         try {
             const response = await GoogleAuth.login(
                 'http://localhost:3000/session',
-                'http://localhost:3000/login'
+                'http://localhost:3000/signup'
             );
-            console.log('Google login response:', response);
+            console.log('Google signup response:', response);
             setNavigating(true);
             setTimeout(() => router.push(response?.uri || '/'), 500);
         } catch (error) {
-            console.log('Google login error', error);
-        } finally {
-            // setLoading(false);
+            console.log('Google signup error', error);
         }
     };
 
@@ -78,21 +68,29 @@ function Page() {
                                 className="flex flex-col items-center justify-center py-10"
                             >
                                 <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
-                                <p className="text-gray-600 dark:text-gray-300 mt-4">Logging in...</p>
+                                <p className="text-gray-600 dark:text-gray-300 mt-4">Creating account...</p>
                             </motion.div>
                         ) : (
                             <motion.form
-                                key="login-form"
+                                key="signup-form"
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 10 }}
                                 transition={{ duration: 0.3 }}
                                 className="flex flex-col space-y-4"
-                                onSubmit={handleSubmit(handleLogin)}
+                                onSubmit={handleSubmit(handleSignup)}
                             >
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white text-center">
-                                    Login to <span className="text-blue-500">codershubinc</span>
+                                    Sign up for <span className="text-blue-500">codershubinc</span>
                                 </h2>
+                                <Input
+                                    id="name"
+                                    type="text"
+                                    placeholder="Full Name"
+                                    {...register('name')}
+                                    required
+                                    className="dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                />
                                 <Input
                                     id="email"
                                     type="email"
@@ -104,7 +102,7 @@ function Page() {
                                 <Input
                                     id="password"
                                     type="password"
-                                    placeholder="Enter password"
+                                    placeholder="Create password"
                                     {...register('password')}
                                     required
                                     className="dark:bg-gray-700 dark:text-white dark:border-gray-600"
@@ -114,10 +112,10 @@ function Page() {
                                     type="submit"
                                     className="w-full text-center font-sans bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
                                 >
-                                    Login
+                                    Sign Up
                                 </Button>
                                 <p className="text-sm text-gray-600 dark:text-gray-300 text-center">
-                                    Don&apos;t have an account? <a href="/signup" className="text-blue-500 hover:underline">Sign up</a>
+                                    Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login</a>
                                 </p>
                             </motion.form>
                         )}
@@ -127,7 +125,7 @@ function Page() {
                         <Button
                             variant="outline"
                             className="w-full h-16 mt-4 text-center font-sans border-gray-300 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 flex items-center justify-center gap-2"
-                            onClick={handleGoogleLogin}
+                            onClick={handleGoogleSignup}
                         >
                             <Image
                                 src="/google.svg"
@@ -136,7 +134,7 @@ function Page() {
                                 height={56}
                                 className="inline-block"
                             />
-                            Continue with Google
+                            Sign Up with Google
                         </Button>
                     )}
                 </motion.div>
@@ -144,4 +142,4 @@ function Page() {
     );
 }
 
-export default Page;
+export default SignupPage;

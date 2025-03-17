@@ -9,10 +9,17 @@ const createSession = async (
         console.log('create session data given', secret, userId)
         console.log('create session endpoint ', codershubincEndpoint);
         ;
-        const response = await axios.post(`${codershubincEndpoint}/appwrite/auth/createSession`, {
-            secret,
-            userId
-        })
+        const response = await axios.get(`${codershubincEndpoint}/appwrite/auth/gSession`,
+            {
+                params: {
+                    secret,
+                    userId
+                }, headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true
+            }
+        )
         return response.data
     } catch (error) {
         console.log('create session error', error);

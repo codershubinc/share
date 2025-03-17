@@ -1,7 +1,6 @@
+import axios from "axios";
 
-const apiEndpoint = process.env.NEXT_PUBLIC_CODERSHUBINC_API_ENDPOINT
-const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
-const cryptEndpoint = process.env.NEXT_PUBLIC_CRYPT_ENDPOINT
+const apiEndpoint = process.env.NEXT_PUBLIC_CODERSHUBINC_ENDPOINT
 
 class auth {
 
@@ -9,20 +8,21 @@ class auth {
     async login(email: string, password: string) {
         try {
             console.log('apiEndpoint', apiEndpoint);
-            const response = await fetch(`${apiEndpoint}/appwrite/auth/login`,
+            if (!email || !password) throw new Error('Email and password are required')
+            console.log('email', email, password);
+
+            const response = await axios.get(`${apiEndpoint}/appwrite/auth/login`,
                 {
-                    method: 'POST',
+                    params: {
+                        email,
+                        password
+                    },
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                    }),
-                    credentials: 'include',
-                    mode: 'cors',
+                    withCredentials: true
+                },
 
-                }
             )
             return response;
         } catch (error) {
