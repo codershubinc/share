@@ -38,6 +38,22 @@ class auth {
             return error;
         }
     }
+
+    async getUser() {
+        try {
+            const response = await axios.get(`${apiEndpoint}/appwrite/auth/getUser`
+                , {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true
+                }
+            )
+            return response.data
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 

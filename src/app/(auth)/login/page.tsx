@@ -1,65 +1,35 @@
-'use client'
-import { useState, useEffect } from 'react';
+'use client';
+import { useState, useEffect, use } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import Auth from "@/utils/codershubinc/auth.util";
-import GoogleAuth from "@/utils/codershubinc/google.auth";
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from "framer-motion";
 import Loading from '@/components/custom/loader';
 import Image from 'next/image';
+import { fetchUser, handleEmailPassLogin, handleGoogleLogin } from './utils/index.util'
 
 function Page() {
     const { handleSubmit, register } = useForm();
     const [loading, setLoading] = useState(false);
     const [navigating, setNavigating] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
 
+    const handelSubmit = async (data: any) => {
+        await handleEmailPassLogin(data, setLoading, setNavigating, setErrorMessage, router);
+    }
+
+    const handleGoogleLoginClick = () => {
+        handleGoogleLogin(setLoading, setNavigating, setErrorMessage, router);
+    };
     useEffect(() => {
-        if (navigating) {
-            setTimeout(() => {
-                setNavigating(false);
-            }, 500); // Smooth animation before navigation
-        }
-    }, [navigating]);
-
-    const handleLogin = async (data: any) => {
-        setLoading(true);
-        try {
-            const response = await Auth.login(data.email, data.password);
-            console.log('Login response:', response);
-            setNavigating(true);
-            // setTimeout(() => router.push('/dashboard'), 500);
-        } catch (error) {
-            console.log('Login error', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleGoogleLogin = async () => {
-        setLoading(true);
-        try {
-            const response = await GoogleAuth.login(
-                'http://localhost:3000/session',
-                'http://localhost:3000/login'
-            );
-            console.log('Google login response:', response);
-            setNavigating(true);
-            setTimeout(() => router.push(response?.uri || '/'), 500);
-        } catch (error) {
-            console.log('Google login error', error);
-        } finally {
-            // setLoading(false);
-        }
-    };
+        fetchUser(setLoading, setErrorMessage, router);
+    }, []);
 
     return (
-        navigating ? (
-            <Loading />
-        ) :
+        navigating ? <Loading /> : (
             <div className="flex min-h-screen items-center justify-center p-6 bg-gray-100 dark:bg-gray-900 transition-colors">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -68,7 +38,7 @@ function Page() {
                     className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700"
                 >
                     <AnimatePresence>
-                        {loading || navigating ? (
+                        {loading ? (
                             <motion.div
                                 key="loading"
                                 initial={{ opacity: 0 }}
@@ -88,25 +58,24 @@ function Page() {
                                 exit={{ opacity: 0, y: 10 }}
                                 transition={{ duration: 0.3 }}
                                 className="flex flex-col space-y-4"
-                                onSubmit={handleSubmit(handleLogin)}
+                                onSubmit={handleSubmit(handelSubmit)}
                             >
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white text-center">
                                     Login to <span className="text-blue-500">codershubinc</span>
                                 </h2>
+                                {errorMessage && <p className="text-red-500 text-sm text-center">{errorMessage}</p>}
                                 <Input
                                     id="email"
                                     type="email"
                                     placeholder="Email"
-                                    {...register('email')}
-                                    required
+                                    {...register('email', { required: true })}
                                     className="dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                 />
                                 <Input
                                     id="password"
                                     type="password"
                                     placeholder="Enter password"
-                                    {...register('password')}
-                                    required
+                                    {...register('password', { required: true })}
                                     className="dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                 />
                                 <Button
@@ -127,7 +96,7 @@ function Page() {
                         <Button
                             variant="outline"
                             className="w-full h-16 mt-4 text-center font-sans border-gray-300 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 flex items-center justify-center gap-2"
-                            onClick={handleGoogleLogin}
+                            onClick={handleGoogleLoginClick}
                         >
                             <Image
                                 src="/google.svg"
@@ -141,6 +110,7 @@ function Page() {
                     )}
                 </motion.div>
             </div>
+        )
     );
 }
 
