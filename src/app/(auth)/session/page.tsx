@@ -1,36 +1,47 @@
-'use client'
-import createSession from '@/utils/codershubinc/createSession'
-import { useSearchParams } from 'next/navigation'
-import React, { useEffect, Suspense } from 'react'
+'use client';
 
-function Page() {
+import createSession from '@/utils/codershubinc/createSession';
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState, Suspense } from 'react';
 
-    const searchParams = useSearchParams()
-    const secret = searchParams.get('secret')
-    const userId = searchParams.get('userId')
+function Session() {
+    const searchParams = useSearchParams();
+    const secret = searchParams.get('secret');
+    const userId = searchParams.get('userId');
+    const [loading, setLoading] = useState(true);
 
-    console.log('secrete', secret)
-    console.log('userId', userId);
+    useEffect(() => {
+        const session = async () => {
+            try {
+                if (!secret || !userId) {
+                    console.log('No secret and userId found');
+                    return;
+                }
+                const response = await createSession(secret, userId);
+                console.log('Session response:', response);
+            } catch (error) {
+                console.error('Error creating session:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const session = async () => {
-        try {
-            if (!secret || !userId) return console.log('no secret and userId found');
-            const response = await createSession(secret, userId);
-            console.log('response session:', response);
-        } catch (error) {
-            console.log('error at creating session', error);
-        }
-    };
-    (() => session())()
+        session();
+    }, [secret, userId]);
 
+    if (loading) {
+        return <div>Loading session...</div>;
+    }
 
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <div>
-                session
-            </div>
-        </Suspense>
-    )
+    return <div>Session initialized</div>;
 }
 
-export default Page
+function Page() {
+    return (
+        <Suspense fallback={<div>Loading session...</div>}>
+            <Session />
+        </Suspense>
+    );
+}
+
+export default Page;
