@@ -18,6 +18,7 @@ function Session() {
                     return;
                 }
                 const response = await createSession(secret, userId);
+
                 console.log('Session response:', response);
             } catch (error) {
                 console.error('Error creating session:', error);
