@@ -10,8 +10,8 @@ const handleGoogleLogin = async (
     setErrorMessage("");
     try {
         const response = await GoogleAuth.login(
-            'http://localhost:3000/session',
-            'http://localhost:3000/login'
+            process.env.NEXT_PUBLIC_GOOGLE_SUCCESS_REDIRECT_URI || 'http://localhost:3000/session',
+            process.env.NEXT_PUBLIC_GOOGLE_FAILURE_REDIRECT_URI || 'http://localhost:3000/login',
         );
         console.log('Google login response:', response);
         setNavigating(true);

@@ -1,7 +1,7 @@
 'use client'
 import createSession from '@/utils/codershubinc/createSession'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, Suspense } from 'react'
 
 function Page() {
 
@@ -25,9 +25,11 @@ function Page() {
 
 
     return (
-        <div>
-            session
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+            <div>
+                session
+            </div>
+        </Suspense>
     )
 }
 
