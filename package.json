@@ -16,7 +16,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.5.0",
-    "js-cookie": "^3.0.5",
     "lucide-react": "^0.473.0",
     "next": "14.2.5",
     "node-appwrite": "^15.0.1",

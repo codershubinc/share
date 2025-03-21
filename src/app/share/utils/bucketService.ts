@@ -1,4 +1,3 @@
-import { getSessionFromCookie } from "@/utils/getSession";
 import { Client, ID, Storage } from "node-appwrite";
 
 const bucketId = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID || "";
