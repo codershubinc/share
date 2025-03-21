@@ -1,17 +1,13 @@
-import { Client, Databases, ID, Query } from "appwrite";
-import { getSessionFromCookie } from "../getSession";
+import { Client, Databases, ID, Query } from "node-appwrite";
 
 class doc {
 
     client = new Client()
         .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || '')
         .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || '')
-        .setSession(getSessionFromCookie() || '')
-
+        .setKey(process.env.NEXT_PUBLIC_APPWRITE_DOC_API_KEY || '')
 
     database = new Databases(this.client)
-
-
 
     async uploadFileInfo(
         name: string,

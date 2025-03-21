@@ -19,6 +19,7 @@
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.473.0",
     "next": "14.2.5",
+    "node-appwrite": "^15.0.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.54.2",
