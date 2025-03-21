@@ -29,3 +29,16 @@ const uploadFile = async (
 };
 
 export default uploadFile;
+
+export const deleteFile = async (
+    fileId: string
+) => {
+    try {
+        const responce = await Bucket.deleteFile(fileId)
+        console.log('File deleted successfully:', responce);
+        return responce
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        throw error
+    }
+}

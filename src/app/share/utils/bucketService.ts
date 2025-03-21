@@ -1,20 +1,26 @@
+import { getSessionFromCookie } from "@/utils/getSession";
 import { Client, ID, Storage } from "appwrite";
 
 const bucketId = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID || "";
 
+const session = getSessionFromCookie()
 class BucketService {
     private client: Client;
     private storage: Storage;
 
     constructor() {
+
         this.client = new Client()
             .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "")
-            .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "");
+            .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "")
+            .setSession(session);
+
 
         this.storage = new Storage(this.client);
     }
 
     async uploadFile(file: File) {
+        console.log('session:', session);
         if (!file) {
             console.error("No file provided");
             throw new Error("File is required for upload.");

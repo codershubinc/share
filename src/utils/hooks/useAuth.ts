@@ -4,7 +4,7 @@ import Auth from "../codershubinc/auth.util"
 const useAuth = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState<any>()
     const [isLogin, setIsLogin] = useState(false)
 
     useEffect(() => {

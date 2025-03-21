@@ -17,7 +17,7 @@ function Page() {
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
 
-    const handelSubmit = async (data: any) => {
+    const handelSubmit = async (data: {}) => {
         await handleEmailPassLogin(data, setLoading, setNavigating, setErrorMessage, router);
     }
 
