@@ -19,7 +19,7 @@ export default function Home() {
       {isAuthenticated ? (
         <div>
           <h2>Welcome, {user?.name}!</h2>
-          <Link href='/dashboard'>Start Syncing </Link>
+          <Link href='/share'>Start Syncing </Link>
         </div>
       ) : (
         <Link href='/login'>Login and Start Syncing</Link>
