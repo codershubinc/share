@@ -22,7 +22,7 @@ export default function Home() {
           <Link href='/share'>Start Syncing </Link>
         </div>
       ) : (
-        <Link href='/login'>Login and Start Syncing</Link>
+        <Link href='/login'>Login and Start Syncing </Link>
       )}
     </main>
   )
