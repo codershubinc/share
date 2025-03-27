@@ -4,6 +4,9 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { toastOptions } from "./share/utils/toastOptions";
 import ReduxProvider from "@/store/redux/reduxProvider";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/custom/appSidebar"
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,13 +32,21 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} dark`}>
+      <body className={`${inter.className} `}>
         <ReduxProvider>
-          <Toaster
-            position="top-center"
-            toastOptions={toastOptions as any}
-          />
-          {children}
+          <SidebarProvider
+            defaultOpen={false}
+          >
+            <SidebarTrigger
+              className="z-50"
+            />
+            <AppSidebar />
+            <Toaster
+              position="top-center"
+              toastOptions={toastOptions as any}
+            />
+            {children}
+          </SidebarProvider>
         </ReduxProvider>
       </body>
     </html>

@@ -86,7 +86,7 @@ function BottomTextArea() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className='fixed bottom-0 left-0 right-0 mx-auto mb-4 w-full max-w-screen-md flex flex-col items-center gap-2'
+            className='fixed bottom-0 left-0 right-0 mx-auto mb-4 w-10/12  flex flex-col items-center gap-2'
         >
             {/* File Input Animation */}
             <motion.div
@@ -97,37 +97,33 @@ function BottomTextArea() {
             >
                 <Input
                     type='file'
-                    className='mb-1 w-1/4'
+                    className='mb-1 w-1/2'
                     onChange={(e) => setFile(e.target.files?.[0] || null)}
+                    maxLength={3500}
                 />
                 {file && <p className="text-sm text-slate-700 w-max text-left"> <span className='text-white font-sans font-bold text-lg ' >File chosen :</span>  {file.name}</p>}
             </motion.div>
 
             <Textarea
                 placeholder="Type your message here..."
-                className="w-[90vh] h-32 rounded-lg resize-none"
+                className="w-full h-32 rounded-lg resize-none"
                 onChange={(e) => setMessage(e.target.value.trim())}
                 required={true}
             />
 
             {/* Animated Upload Button */}
             <motion.button
+                onClick={uploadFileService}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 animate={loading ? { scale: [1, 1.05, 1] } : {}}
                 transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
-                className="w-1/4"
+                className={`w-1/4 rounded-lg p-2 text-white 
+                            ${loading ? 'bg-gray-300 text-gray-500' : 'bg-blue-600 hover:bg-blue-700 dark:bg-slate-900 dark:hover:bg-blue-600'} 
+                            ${!file && 'cursor-not-allowed'}`}
                 disabled={!file || loading}
             >
-                <Button
-                    variant='outline'
-                    className="w-full"
-                    disabled={!file || loading}
-                    type='submit'
-                    onClick={uploadFileService}
-                >
-                    {loading ? 'Uploading...' : 'Upload File'}
-                </Button>
+                {loading ? 'Uploading...' : 'Upload File'}
             </motion.button>
         </motion.div>
     );
